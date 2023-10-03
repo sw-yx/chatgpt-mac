@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - 'v*'
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
 
 jobs:
   build:
@@ -41,7 +43,6 @@ jobs:
         release_name: Release ${{ steps.app_location.outputs.tagname }}
         draft: false
         prerelease: false
-        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Release Asset x64
       uses: actions/upload-release-asset@v1
@@ -50,7 +51,6 @@ jobs:
         asset_path: ${{ steps.app_location.outputs.fullpath_x64 }}
         asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} x64
         asset_content_type: application/x-dmg
-        token: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Upload Release Asset arm64
       uses: actions/upload-release-asset@v1
@@ -59,4 +59,3 @@ jobs:
         asset_path: ${{ steps.app_location.outputs.fullpath_arm64 }}
         asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} arm64
         asset_content_type: application/x-dmg
-        token: ${{ secrets.GITHUB_TOKEN }}

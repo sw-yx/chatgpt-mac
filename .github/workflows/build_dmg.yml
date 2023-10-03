@@ -43,3 +43,4 @@ jobs:
         name: Release ${{ steps.app_location.outputs.tagname }}
         draft: false
         prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}

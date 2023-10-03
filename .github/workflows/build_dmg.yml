@@ -27,6 +27,7 @@ jobs:
     - name: App location
       id: app_location
       run: |
+        find ./ -type f
         file=$(ls *.dmg)
         fullpathfile=$(readlink -f "$file")
         echo "fullpathfile=${fullpathfile}" >> $GITHUB_OUTPUT

@@ -38,7 +38,7 @@ jobs:
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
-        files: ${{ steps.app_location.outputs.fullpath_x64 }} ${{ steps.app_location.outputs.fullpath_arm64 }}
+        files: ./out/make/*.dmg
         tag_name: ${{ steps.app_location.outputs.tagname }}
         name: Release ${{ steps.app_location.outputs.tagname }}
         draft: false

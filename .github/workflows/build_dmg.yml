@@ -25,13 +25,13 @@ jobs:
       run: npm run make  # Replace with your build command
 
     - name: App location
-        id: app_location
-        run: |
-          file=$(ls *.dmg)
-          fullpathfile=$(readlink -f "$file")
-          echo "fullpathfile=${fullpathfile}" >> $GITHUB_OUTPUT
-          echo "file=${file}" >> $GITHUB_OUTPUT
-          echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
+      id: app_location
+      run: |
+        file=$(ls *.dmg)
+        fullpathfile=$(readlink -f "$file")
+        echo "fullpathfile=${fullpathfile}" >> $GITHUB_OUTPUT
+        echo "file=${file}" >> $GITHUB_OUTPUT
+        echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
 
     - name: Create GitHub Release
       id: create_release

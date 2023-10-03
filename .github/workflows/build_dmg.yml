@@ -27,11 +27,10 @@ jobs:
     - name: App location
       id: app_location
       run: |
-        find ./ -type f
-        file=$(ls *.dmg)
-        fullpathfile=$(readlink -f "$file")
-        echo "fullpathfile=${fullpathfile}" >> $GITHUB_OUTPUT
-        echo "file=${file}" >> $GITHUB_OUTPUT
+        fullpath_arm64=$(readlink -f "./out/make/*-arm64.dmg")
+        fullpath_x64=$(readlink -f "./out/make/*-x64.dmg")
+        echo "fullpath_arm64=${fullpath_arm64}" >> $GITHUB_OUTPUT
+        echo "fullpath_x64=${fullpath_x64}" >> $GITHUB_OUTPUT
         echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
 
     - name: Create GitHub Release
@@ -43,10 +42,18 @@ jobs:
         draft: false
         prerelease: false
 
-    - name: Upload Release Asset
+    - name: Upload Release Asset x64
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.app_location.outputs.fullpathfile }}
-        asset_name: ${{ steps.app_location.outputs.file }}
+        asset_path: ${{ steps.app_location.outputs.fullpath_x64 }}
+        asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} x64
+        asset_content_type: application/x-dmg
+    
+    - name: Upload Release Asset arm64
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ steps.app_location.outputs.fullpath_arm64 }}
+        asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} arm64
         asset_content_type: application/x-dmg

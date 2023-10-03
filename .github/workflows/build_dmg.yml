@@ -5,7 +5,7 @@ on:
     tags:
       - 'v*'
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -35,27 +35,11 @@ jobs:
         echo "fullpath_x64=${fullpath_x64}" >> $GITHUB_OUTPUT
         echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
 
-    - name: Create GitHub Release
-      id: create_release
-      uses: actions/create-release@v1
+    - name: Create release
+      uses: softprops/action-gh-release@v1
       with:
+        files: ${{ steps.app_location.outputs.fullpath_x64 }} ${{ steps.app_location.outputs.fullpath_arm64 }}
         tag_name: ${{ steps.app_location.outputs.tagname }}
-        release_name: Release ${{ steps.app_location.outputs.tagname }}
+        name: Release ${{ steps.app_location.outputs.tagname }}
         draft: false
         prerelease: false
-
-    - name: Upload Release Asset x64
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.app_location.outputs.fullpath_x64 }}
-        asset_name: ChatGPT_${{ steps.app_location.outputs.tagname }}_x64.dmg
-        asset_content_type: application/x-dmg
-    
-    - name: Upload Release Asset arm64
-      uses: actions/upload-release-asset@v1
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ steps.app_location.outputs.fullpath_arm64 }}
-        asset_name: ChatGPT_${{ steps.app_location.outputs.tagname }}_arm64.dmg
-        asset_content_type: application/x-dmg

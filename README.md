@@ -12,5 +12,5 @@ https://github.com/sw-yx/chatgpt-mac/releases/tag/vswyx
 ## usage
 
 Cmd+Shift+G -> quick open
-
+ 
 Cmd+R -> refresh/clear

@@ -1,0 +1,51 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build the app
+      run: npm run make  # Replace with your build command
+
+    - name: App location
+        id: app_location
+        run: |
+          file=$(ls *.dmg)
+          fullpathfile=$(readlink -f "$file")
+          echo "fullpathfile=${fullpathfile}" >> $GITHUB_OUTPUT
+          echo "file=${file}" >> $GITHUB_OUTPUT
+          echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ steps.app_location.outputs.tagname }}
+        release_name: Release ${{ steps.app_location.outputs.tagname }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ steps.app_location.outputs.fullpathfile }}
+        asset_name: ${{ steps.app_location.outputs.file }}
+        asset_content_type: application/x-dmg

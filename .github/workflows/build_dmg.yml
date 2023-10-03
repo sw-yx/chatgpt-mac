@@ -49,7 +49,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ${{ steps.app_location.outputs.fullpath_x64 }}
-        asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} x64
+        asset_name: ChatGPT_${{ steps.app_location.outputs.tagname }}_x64.dmg
         asset_content_type: application/x-dmg
     
     - name: Upload Release Asset arm64
@@ -57,5 +57,5 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ${{ steps.app_location.outputs.fullpath_arm64 }}
-        asset_name: ChatGPT ${{ steps.app_location.outputs.tagname }} arm64
+        asset_name: ChatGPT_${{ steps.app_location.outputs.tagname }}_arm64.dmg
         asset_content_type: application/x-dmg

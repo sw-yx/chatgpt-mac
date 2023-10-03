@@ -27,8 +27,8 @@ jobs:
     - name: App location
       id: app_location
       run: |
-        fullpath_arm64=$(readlink -f "./out/make/*-arm64.dmg")
-        fullpath_x64=$(readlink -f "./out/make/*-x64.dmg")
+        fullpath_arm64=$(readlink -f ./out/make/*-arm64.dmg)
+        fullpath_x64=$(readlink -f ./out/make/*-x64.dmg)
         echo "fullpath_arm64=${fullpath_arm64}" >> $GITHUB_OUTPUT
         echo "fullpath_x64=${fullpath_x64}" >> $GITHUB_OUTPUT
         echo "tagname=$(echo $GITHUB_REF | sed 's|refs/tags/||')" >> $GITHUB_OUTPUT
